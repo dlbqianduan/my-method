@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //模拟call()
+        Function.prototype.myCall = function (context, ...arg) {
+            const _context = context || window;
+            const fn = Symbol('临时属性')
+            _context[fn] = this;
+            _context[fn](...arg);
+            delete context[fn]
+        }
+    </script>
+</body>
+
+</html>
