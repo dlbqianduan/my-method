@@ -18,6 +18,126 @@
             _context[fn](...arg);
             delete context[fn]
         }
+
+        //判断空对象
+        function emptyObject(data) {
+            for (const item in data) {
+                return false;
+            }
+            return true;
+        }
+
+        //判断对象
+        function isObject(data) {
+            return Object.prototype.toString(data) === "[object Object]"
+        }
+
+        //判断数组
+        function isArray(data) {
+            return Object.prototype.toString(data) === "[object Array]"
+        }
+
+        //判断set
+        function isSet(data) {
+            return Object.prototype.toString(data) === "[object Set]"
+        }
+
+        //判断map
+        function isMap(data) {
+            return Object.prototype.toString(data) === "[object Map]"
+        }
+
+        //浅拷贝
+        function ShallowClone(data) {
+            if (typeof data === 'object') {
+                let cloneResult = isObject(data) ? {} : [];
+                for (const key in data) {
+                    cloneResult[key] = data[key];
+                }
+                return cloneResult;
+            } else {
+                return data;
+            }
+
+        }
+
+        //深拷贝(只考虑array,object)
+        function deepClone(data, map = new Map()) {
+            if (typeof data === 'object') {
+                let cloneResult = isObject(data) ? {} : [];
+                if (map.get(target)) {
+                    return map.get(target);
+                }
+                map.set(data, cloneResult);
+                for (const key in data) {
+                    cloneResult[key] = deepClone(data[key], map);
+                }
+                return cloneResult;
+            } else {
+                return data;
+            }
+        }
+
+        //深拷贝(考虑array,objec,set,map)
+        function deepClone(data, map = new Map()) {
+            if (!isObject(data)) {
+                return data;
+            }
+            let cloneResult;
+            if (map.get(target)) {
+                return map.get(target);
+            }
+            map.set(target, "");
+
+            if (isSet(data)) {
+                cloneResult = new Set();
+                data.forEach(value => {
+                    cloneResult.add(deepClone(value, map));
+                });
+                return cloneResult;
+            }
+
+            if (isMap()) {
+                cloneResult = new Map();
+                data.forEach((value, key) => {
+                    cloneResult.set(key, deepClone(value, map));
+                });
+                return cloneResult;
+            }
+
+            cloneResult = isObject(data) ? {} : [];
+            for (const key in data) {
+                cloneResult[key] = deepClone(data[key], map);
+            }
+            return cloneResult;
+
+        }
+
+        //判断手机
+        function judgeMobile() {
+            const userAgent = navigator.userAgent;
+            const reg = /(iPhone|iPad|iPod|iOS|Android)/i
+            return reg.test(userAgent);
+        }
+
+        //判断ipad
+        function judgeIpad() {
+            let ua = navigator.userAgent.toLowerCase();
+            return /ipad/i.test(ua);
+        }
+
+        //判断ios
+        function judgeIOS() {
+            const userAgent = window.navigator.userAgent;
+            return /iPhone|iPad|iPod|iOS/i.test(userAgent);
+        }
+
+        //判断android
+        function judgeAndroid() {
+            const userAgent = window.navigator.userAgent;
+            return /Android/i.test(userAgent);
+        }
+
     </script>
 </body>
 
