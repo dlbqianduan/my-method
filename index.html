@@ -137,6 +137,43 @@
             const userAgent = window.navigator.userAgent;
             return /Android/i.test(userAgent);
         }
+        
+        //数字转中文(仅支持最大数字：99999)
+        function numberUpper(value) {
+            if (typeof Number(value) !== 'number' || String(value).length >= 6) {
+                return value;
+            }
+            const smallNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+            const bigNumChar = ['', '十', '百', '千', '万'];
+            let _value = parseInt(value);
+            let numList = [], result = '';
+            let strList = String(_value).split('').reverse();
+            let len = strList.length;
+            if (len > 1) {
+                strList.forEach((ele, ind) => {
+                    if(ele == 0){
+                        if(ind - 1 >= 0 && strList[ind -1] !== '0' ){
+                            console.log(ind,strList[ind -1])
+                            result = smallNumChar[0] + result;
+                        }else{
+                            result = '' + result;
+                        }
+                    }else{
+                        if(ind == 0){
+                            result = smallNumChar[ele] + result;
+                        }else if(len == 2 && ele == "1"){
+                            result = bigNumChar[ind] + result;
+                        }
+                        else{
+                            result = smallNumChar[ele] + bigNumChar[ind] + result;
+                        }
+                    }
+                })
+                return result;
+            } else {
+                return smallNumChar[_value];
+            }
+        }
 
     </script>
 </body>
