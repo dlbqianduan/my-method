@@ -272,25 +272,29 @@ function timeBefore(value) {
   return timeBefore;
 }
 
-//计算年龄
-function computedAge(value) {
+/**
+ * 计算年龄/工作年限
+ * @param {string} value
+ * @param {number} type 0 计算年龄 1 计算工作年限
+ * @param {number} num  type为1时使用。向上取整粒度，单位为月。
+ */
+function computedAge(value, type = 0, num = 0) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const day = date.getDate();
   let nowTimer = date.getTime();
   let timer = new Date(value.replace(/-/g, "/")).getTime();
   let valueArr = value.split("-");
   let result = year - valueArr[0];
+  let condition = type
+    ? parseInt(valueArr[1]) <= month + num
+    : month > valueArr[1] || (month == valueArr[1] && day >= valueArr[2]);
   if (timer > nowTimer) {
     return 0;
   }
-  if (
-    month > valueArr[1] ||
-    (month == valueArr[1] && day >= valueArr[2])
-  ) {
+  if (condition) {
     return result;
   } else {
-    return result - 1;
+    return type ? (result - 1 > 0 ? result - 1 : "半年") : result - 1;
   }
 }
